@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scriptable Timer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Scriptable Timer</h1>
+    <form id="timerForm">
+        <div id="timerInputs">
+            <div class="inputRow">
+                <label for="name0">Name:</label>
+                <input type="text" id="name0" name="name0" required>
+                <label for="time0">Time (seconds):</label>
+                <input type="number" id="time0" name="time0" min="1" required>
+            </div>
+        </div>
+        <button type="button" id="addTimer">+</button>
+    </form>
+    <div id="activeTimer"></div>
+    <div id="controls">
+        <button id="startPause">Start</button>
+        <button id="reset">Reset</button>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

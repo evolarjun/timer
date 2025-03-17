@@ -1,0 +1,14 @@
+#timerDisplay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: lightgray;
+  padding: 10px;
+  text-align: center;
+  z-index: 100;
+}
+
+input:invalid {
+  border: 2px solid red;
+}
