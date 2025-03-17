@@ -4,6 +4,23 @@
   # Which nixpkgs channel to use.
   channel = "stable-24.05"; # or "unstable"
 
+  idx.previews = {
+    enable = true;
+    previews = {
+      web = {
+        command = [
+          "npm"
+          "run"
+          "start"
+          "--"
+          "-l"
+          "$PORT"
+        ];
+        manager = "web";
+      };
+    };
+  };
+
   # Use https://search.nixos.org/packages to find packages
   packages = [
     # pkgs.go
@@ -15,6 +32,8 @@
 
   # Sets environment variables in the workspace
   
+
+
   env = {};
   idx = {
     # Search for the extensions you want on https://open-vsx.org/ and use "publisher.id"
@@ -22,14 +41,6 @@
       # "vscodevim.vim"
     ];
 
-    # Enable previews
-    # previews = false;
-    # previews.web = {
-      # Example: run "http-server -p $PORT" with PORT set to IDX's defined port for previews,
-      # and show it in IDX's web preview panel
-      # command = "http-server -p $PORT";
-    #  }; 
-    
     # Workspace lifecycle hooks
     workspace = {
       # Runs when a workspace is first created

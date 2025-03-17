@@ -23,12 +23,21 @@ document.addEventListener('DOMContentLoaded', function () {
         const timerRows = timerForm.querySelectorAll('div:not(:last-child)');
         timerRows.forEach(row => {
             const durationInput = row.querySelector('input[name="duration"]');
-            const duration = parseInt(durationInput.value);
-            if (isNaN(duration) || duration < 0) {
-                durationInput.style.border = '2px solid red';
+            const nameInput = row.querySelector('input[name="name"]');
+            if (nameInput.value.trim() === '') {
+                nameInput.style.border = '2px solid red';
                 isValid = false;
             } else {
-                durationInput.style.border = '';
+                 nameInput.style.border = '';
+            }
+            if (durationInput) {
+                const duration = parseInt(durationInput.value);
+                if (isNaN(duration) || duration < 0 ) {
+                    durationInput.style.border = '2px solid red';
+                    isValid = false;
+                } else {
+                    durationInput.style.border = '';
+                }
             }
         });
         return isValid;
@@ -38,17 +47,23 @@ document.addEventListener('DOMContentLoaded', function () {
         timers = [];
         const timerRows = timerForm.querySelectorAll('div:not(:last-child)');
         timerRows.forEach(row => {
-            const name = row.querySelector('input[name="name"]').value;
-            const duration = parseInt(row.querySelector('input[name="duration"]').value);
-            timers.push({ name, duration });
+            const nameInput = row.querySelector('input[name="name"]');
+            const durationInput = row.querySelector('input[name="duration"]');
+            if (nameInput.value.trim() !== '' && durationInput.value.trim() !== '') {
+                const name = nameInput.value;
+                const duration = parseInt(durationInput.value);
+                timers.push({ name, duration });
+            }
         });
     }
     
     function startTimer() {
         loadTimers();
-        if (!validateTimers()) {
-            return;
-        }
+        if (timers.length > 0){
+            if (!validateTimers()) {
+                return;
+            }
+        }else{return;}
         if (currentTimerIndex < timers.length) {
             let currentTimer = { ...timers[currentTimerIndex] };
             timerDisplay.textContent = `${currentTimer.name}: ${currentTimer.duration} seconds`;
@@ -65,7 +80,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             }, 1000);
             startPauseButton.textContent = 'Pause';
-            
         } else {
             currentTimerIndex = 0;
             startPauseButton.textContent = 'Start';
@@ -83,7 +97,6 @@ document.addEventListener('DOMContentLoaded', function () {
             const durationInput = row.querySelector('input[name="duration"]');
             durationInput.style.border = '';
         });
-        
     }
 
     addTimerButton.addEventListener('click', addTimerRow);
