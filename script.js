@@ -12,11 +12,25 @@ document.addEventListener('DOMContentLoaded', function () {
     
     function addTimerRow() {
         const newRow = document.createElement('div');
+        const index = timerRowsContainer.children.length;
         newRow.innerHTML = `
             <input type="text" name="name" placeholder="Timer Name" required>
             <input type="number" name="duration" placeholder="Seconds" required>
         `;
+        
+        if (index > 0) {
+            const deleteButton = document.createElement('button');
+            deleteButton.textContent = 'x';
+            deleteButton.addEventListener('click', function() {
+                timerRowsContainer.removeChild(newRow);
+                 updateRowIndices();
+            });
+            newRow.appendChild(deleteButton);
+        }
         timerRowsContainer.appendChild(newRow);
+    }
+    function updateRowIndices() {
+        
     }
 
     function validateTimers() {
@@ -31,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function () {
             } else {
                  nameInput.style.border = '';
             }
-            if (durationInput) {
+            if (durationInput) {                
                 const duration = parseInt(durationInput.value);
                 if (isNaN(duration) || duration < 0 ) {
                     durationInput.style.border = '2px solid red';
@@ -115,7 +129,7 @@ document.addEventListener('DOMContentLoaded', function () {
         timerDisplay.textContent = '';
         startPauseButton.textContent = 'Start';
         isPaused = false;
-        const timerRows = timerForm.querySelectorAll('div:not(:last-child)');
+        const timerRows = timerForm.querySelectorAll('div');
         timerRows.forEach(row => {
             const durationInput = row.querySelector('input[name="duration"]');
             durationInput.style.border = '';
