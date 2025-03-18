@@ -1,14 +1,32 @@
 #timerDisplay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
+  margin-top: 20px;
   background-color: lightgray;
   padding: 10px;
   text-align: center;
-  z-index: 100;
+}
+
+form{
+  display: flex;
+  flex-wrap: wrap;
 }
 
 input:invalid {
   border: 2px solid red;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin: 0 10px 10px 0;
+}
+
+input, textarea{
+  
+}
+.add-button {
+  align-self: center;
+  margin-bottom: 10px;
+}
+input,textarea{
+  margin-bottom: 5px;
 }

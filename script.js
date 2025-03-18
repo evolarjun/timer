@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     const timerForm = document.getElementById('timerForm');
+    const timerRowsContainer = document.getElementById('timerRows');
     const addTimerButton = document.getElementById('addTimer');
     const timerDisplay = document.getElementById('timerDisplay');
     const startPauseButton = document.getElementById('startPause');
@@ -8,19 +9,19 @@ document.addEventListener('DOMContentLoaded', function () {
     let currentTimerIndex = 0;
     let timerInterval;
     let isPaused = false;
-
+    
     function addTimerRow() {
         const newRow = document.createElement('div');
         newRow.innerHTML = `
             <input type="text" name="name" placeholder="Timer Name" required>
             <input type="number" name="duration" placeholder="Seconds" required>
         `;
-        timerForm.insertBefore(newRow, addTimerButton.parentNode);
+        timerRowsContainer.appendChild(newRow);
     }
 
     function validateTimers() {
         let isValid = true;
-        const timerRows = timerForm.querySelectorAll('div:not(:last-child)');
+        const timerRows = Array.from(timerRowsContainer.children);
         timerRows.forEach(row => {
             const durationInput = row.querySelector('input[name="duration"]');
             const nameInput = row.querySelector('input[name="name"]');
@@ -45,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function loadTimers() {
         timers = [];
-        const timerRows = timerForm.querySelectorAll('div:not(:last-child)');
+        const timerRows = Array.from(timerRowsContainer.children);
         timerRows.forEach(row => {
             const nameInput = row.querySelector('input[name="name"]');
             const durationInput = row.querySelector('input[name="duration"]');
@@ -57,23 +58,43 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
     
+    function beep(duration, frequency, volume) {
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = audioContext.createOscillator();
+        const gain = audioContext.createGain();
+      
+        oscillator.connect(gain);
+        gain.connect(audioContext.destination);
+      
+        oscillator.type = 'sine'; // You can change this to 'square', 'triangle', or 'sawtooth'
+        oscillator.frequency.setValueAtTime(frequency || 440, audioContext.currentTime); // Default to 440Hz (A4)
+        gain.gain.setValueAtTime(volume || 0.5, audioContext.currentTime); // Default to 0.5 volume
+      
+        oscillator.start();
+        oscillator.stop(audioContext.currentTime + (duration || 0.5)); // Default to 0.5 seconds
+      
+        // Handle browser compatibility for older browsers
+        if (!window.AudioContext) {
+          console.warn("Web Audio API is not supported in this browser.");
+        }
+    }
+
     function startTimer() {
-        loadTimers();
-        if (timers.length > 0){
-            if (!validateTimers()) {
-                return;
-            }
-        }else{return;}
-        if (currentTimerIndex < timers.length) {
-            let currentTimer = { ...timers[currentTimerIndex] };
+         loadTimers();
+         if (!validateTimers()) {
+             return;
+         }        
+        
+        if (currentTimerIndex < timers.length) {            
+             let currentTimer = { ...timers[currentTimerIndex] };
             timerDisplay.textContent = `${currentTimer.name}: ${currentTimer.duration} seconds`;
             timerInterval = setInterval(() => {
                 if (!isPaused) {
                     currentTimer.duration--;
                     timerDisplay.textContent = `${currentTimer.name}: ${currentTimer.duration} seconds`;
                     if (currentTimer.duration <= 0) {
+                        beep(0.3, 500, 1);
                         clearInterval(timerInterval);
-                        new Audio('data:audio/wav;base64,UklGRjIAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA=').play();
                         currentTimerIndex++;
                         startTimer();
                     }
@@ -81,7 +102,9 @@ document.addEventListener('DOMContentLoaded', function () {
             }, 1000);
             startPauseButton.textContent = 'Pause';
         } else {
+            new Audio('data:audio/wav;base64,UklGRjIAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA=').play();
             currentTimerIndex = 0;
+            timers = []
             startPauseButton.textContent = 'Start';
         }
     }
