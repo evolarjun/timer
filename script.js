@@ -1,7 +1,9 @@
 document.addEventListener('DOMContentLoaded', function () {
     const timerForm = document.getElementById('timerForm');
     const timerRowsContainer = document.getElementById('timerRows');
+    const copyURLButton = document.getElementById('copyURL');
     const addTimerButton = document.getElementById('addTimer');
+    
     const timerDisplay = document.getElementById('timerDisplay');
     const startPauseButton = document.getElementById('startPause');
     const resetButton = document.getElementById('reset');
@@ -11,11 +13,27 @@ document.addEventListener('DOMContentLoaded', function () {
     let isPaused = false;
     
     function addTimerRow() {
-        const newRow = document.createElement('div');
+        const newRow = createTimerRow();
         const index = timerRowsContainer.children.length;
-        newRow.innerHTML = `
-            <input type="text" name="name" placeholder="Timer Name" required>
-            <input type="number" name="duration" placeholder="Seconds" required>
+        
+        timerRowsContainer.appendChild(newRow);
+        updateRowIndices();
+    }
+    function updateRowIndices() {
+        const timerRows = Array.from(timerRowsContainer.children);
+        timerRows.forEach((row, index) => {
+            const deleteButton = row.querySelector('button');
+            if (deleteButton) {
+                deleteButton.dataset.index = index;
+            }
+        });
+    }
+    function createTimerRow(name = '', duration = '') {
+        let index = 0;
+        const newRow = document.createElement('div');        
+        newRow.innerHTML = `            
+            <input type="text" name="name" placeholder="Timer Name" value="${name}" required>
+            <input type="number" name="duration" placeholder="Seconds" value="${duration}" required>
         `;
         
         if (index > 0) {
@@ -23,14 +41,11 @@ document.addEventListener('DOMContentLoaded', function () {
             deleteButton.textContent = 'x';
             deleteButton.addEventListener('click', function() {
                 timerRowsContainer.removeChild(newRow);
-                 updateRowIndices();
+                updateRowIndices();
             });
             newRow.appendChild(deleteButton);
         }
-        timerRowsContainer.appendChild(newRow);
-    }
-    function updateRowIndices() {
-        
+        return newRow;
     }
 
     function validateTimers() {
@@ -70,6 +85,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 timers.push({ name, duration });
             }
         });
+        updateURL();
     }
     
     function beep(duration, frequency, volume) {
@@ -135,9 +151,43 @@ document.addEventListener('DOMContentLoaded', function () {
             durationInput.style.border = '';
         });
     }
+    
+    function updateURL() {
+        const timerRows = Array.from(timerRowsContainer.children);
+        const params = [];
+        timerRows.forEach(row => {
+            const nameInput = row.querySelector('input[name="name"]');
+            const durationInput = row.querySelector('input[name="duration"]');
+            if (nameInput && durationInput && nameInput.value.trim() !== '' && durationInput.value.trim() !== '') {
+                params.push(`name=${encodeURIComponent(nameInput.value)}`);
+                params.push(`time=${encodeURIComponent(durationInput.value)}`);
+            }
+        });
+        const queryString = params.join('&');
+        const newURL = `${window.location.origin}${window.location.pathname}?${queryString}`;
+        
+        history.replaceState({}, '', newURL);
+    }
+    
+    function loadFromURL() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const names = urlParams.getAll('name');
+        const times = urlParams.getAll('time');
+    
+        if (names.length === times.length && names.length > 0) {
+            timerRowsContainer.innerHTML = ''; // Clear existing rows
+            for (let i = 0; i < names.length; i++) {
+                const newRow = createTimerRow(names[i], times[i]);
+                timerRowsContainer.appendChild(newRow);
+            }
+        }
+    }
+    
+    loadFromURL();
 
     addTimerButton.addEventListener('click', addTimerRow);
-    startPauseButton.addEventListener('click', () => {
+    
+    startPauseButton.addEventListener('click', () => {        
         if (startPauseButton.textContent === 'Start') {
             startTimer();
         } else if (startPauseButton.textContent === 'Pause') {
@@ -149,4 +199,10 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
     resetButton.addEventListener('click', resetTimer);
+    copyURLButton.addEventListener('click', () => {
+        updateURL();
+        navigator.clipboard.writeText(window.location.href)
+            .then(() => alert('URL copied to clipboard!'))
+            .catch(err => console.error('Could not copy URL: ', err));
+    });
 });
