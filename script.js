@@ -11,38 +11,49 @@ document.addEventListener('DOMContentLoaded', function () {
     let currentTimerIndex = 0;
     let timerInterval;
     let isPaused = false;
-    
+    function removeTimerRow(index) {
+        const timerRows = Array.from(timerRowsContainer.children);
+        if (index >= 0 && index < timerRows.length) {
+            timerRowsContainer.removeChild(timerRows[index]);
+            updateRowIndices();
+           
+        }
+    }
+
+    function updateRowIndices() {
+        const timerRows = Array.from(timerRowsContainer.children);
+        timerRows.forEach((row, index) => {
+            row.dataset.index = index;
+        });
+    }
+
     function addTimerRow() {
         const newRow = createTimerRow();
+
         const index = timerRowsContainer.children.length;
         
         timerRowsContainer.appendChild(newRow);
         updateRowIndices();
     }
-    function updateRowIndices() {
-        const timerRows = Array.from(timerRowsContainer.children);
-        timerRows.forEach((row, index) => {
-            const deleteButton = row.querySelector('button');
-            if (deleteButton) {
-                deleteButton.dataset.index = index;
-            }
-        });
-    }
     function createTimerRow(name = '', duration = '') {
-        let index = 0;
-        const newRow = document.createElement('div');        
+        const newRow = document.createElement('div'); 
+        const index = timerRowsContainer.children.length;      
         newRow.innerHTML = `            
             <input type="text" name="name" placeholder="Timer Name" value="${name}" required>
             <input type="number" name="duration" placeholder="Seconds" value="${duration}" required>
         `;
         
-        if (index > 0) {
-            const deleteButton = document.createElement('button');
-            deleteButton.textContent = 'x';
+        if (index !== 0) {
+            const deleteButton = document.createElement('button');            
+            deleteButton.textContent = 'X';
+            deleteButton.id = 'removeTimerButton'
+            newRow.setAttribute('data-index', index)
             deleteButton.addEventListener('click', function() {
-                timerRowsContainer.removeChild(newRow);
-                updateRowIndices();
+                const index = parseInt(newRow.dataset.index);
+                removeTimerRow(index);
             });
+
+
             newRow.appendChild(deleteButton);
         }
         return newRow;
