@@ -3,7 +3,7 @@ Scriptable javascript timer
 
 This is just a learning experiment to write an application entirely in JavaScript (a langauage that I do not know) using GenAI as much as possible. Most of it was written using Google IDX and Gemini, but I did test some other methods.
 
-Things I have learned (I don't know anything about prompt engineering or GenAI really):
+# Things I have learned (I don't know anything about prompt engineering or GenAI really):
 
 ## small prompts for MVP then add features worked better
 
