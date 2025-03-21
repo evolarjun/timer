@@ -1,5 +1,5 @@
 # timer
-Scriptable javascript timer
+Scriptable javascript timer  https://evolarjun.github.io/timer/
 
 This is just a learning experiment to write an application entirely in JavaScript (a langauage that I do not know) using GenAI as much as possible. Most of it was written using Google IDX and Gemini, but I did test some other methods.
 
