@@ -157,6 +157,23 @@ document.addEventListener('DOMContentLoaded', function () {
         });
         updateURL();
     }
+
+    /**
+     * Auto generated ring bell function
+     */
+    function ringBell() {
+        const audio = new Audio("bell.mp3");
+
+        audio.addEventListener('loadeddata', () => {
+          // Audio is loaded and ready to play
+          audio.play();
+        });
+      
+        audio.addEventListener('error', (error) => {
+          console.error('Error loading audio:', error);
+        });      
+    }
+
     /**
      * Generates a beep sound of a specified duration, frequency, and volume.
      *
@@ -215,7 +232,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     currentTimer.duration--;
                     timerDisplay.textContent = `${currentTimer.name}: ${currentTimer.duration} seconds`;
                     if (currentTimer.duration <= 0) {
-                        beep(0.3, 500, 1);
+                        // beep(0.3, 500, 1);
+                        ringBell();
                         clearInterval(timerInterval);
                         currentTimerIndex++;
                         startTimer();

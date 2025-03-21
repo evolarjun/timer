@@ -14,7 +14,7 @@ jobs:
     - name: Build the site
       run: |
         mkdir _site
-        cp index.html script.js style.css _site
+        cp index.html script.js style.css bell.mp3 _site
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v3
   deploy:
