@@ -6,6 +6,9 @@ This is just a learning experiment to write an application entirely in JavaScrip
 ## TODO:
 - Improve the interface, making the timer countdown bigger and more obvious
 - Have it flash the screen or otherwise visually alert for one second when the timer is up
+- Add CopyURL and Clear buttons
+- Change Plus button to Add Row button below the timers
+- 
 
 
 # Things I have learned (I don't know anything about prompt engineering or GenAI really):
