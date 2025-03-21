@@ -3,6 +3,11 @@ Scriptable javascript timer
 
 This is just a learning experiment to write an application entirely in JavaScript (a langauage that I do not know) using GenAI as much as possible. Most of it was written using Google IDX and Gemini, but I did test some other methods.
 
+## TODO:
+- Improve the interface, making the timer countdown bigger and more obvious
+- Have it flash the screen or otherwise visually alert for one second when the timer is up
+
+
 # Things I have learned (I don't know anything about prompt engineering or GenAI really):
 
 ## small prompts for MVP then add features worked better
