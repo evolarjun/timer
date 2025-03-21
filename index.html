@@ -1,33 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scriptable Timer</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scriptable Timer</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
 <body>
-    <h1>Scriptable Timer</h1>
-    <form id="timerForm">
-        <div id="timerRows">
-            <div id="timerInputs">
-                <input type="text" id="name0" name="name" placeholder="Timer Name" required>
-                <input type="number" id="time0" name="duration" placeholder="Seconds" min="1" required>
-            </div>
-        </div>
-        <div id="timerControls">
-
-        
-        </div>
-        <div>
-        <button type="button" id="addTimer">+</button>
-        </div>
-    </form>
-    <div id="timerDisplay"></div>
-    <div id="controls">
-        <button id="startPause">Start</button>
-        <button id="reset">Reset</button>
+  <header class="header">
+    <div class="container">
+      <h1 class="header__title">Scriptable Timer</h1>
     </div>
-    <script src="script.js"></script>    
+  </header>
+  <main class="main">
+    <div class="container">
+      <section class="timer-form-section">
+        <form id="timerForm" class="timer-form">
+          <div id="timerRows" class="timer-form__rows"></div>
+          <div class="timer-form__actions">
+            <button type="button" id="addTimer" class="button button--add">+</button>
+          </div>
+        </form>
+      </section>
+      <section class="timer-display-section">
+         <div id="timerDisplay" class="timer-display"></div>
+      </section>
+      <section class="timer-controls-section">
+        <div id="controls" class="timer-controls">
+          <button id="startPause" class="button button--start">Start</button>
+          <button id="reset" class="button button--reset">Reset</button>
+        </div>
+      </section>      
+    </div>
+  </main>
+  <script src="script.js"></script>    
 </body>
 </html>
