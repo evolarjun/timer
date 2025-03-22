@@ -29,6 +29,12 @@ body {
   margin-left: 10px; /* add more margin between the timer name and the timer number */
 }
 
+#controls.timerControls {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
 form {
   display: flex;
   flex-wrap: wrap;
@@ -60,7 +66,6 @@ form {
 .timer-form__rows > div{
   display: flex;
   width: 100%;
-  gap: 5px;
 }
 
 .timer-form__rows input {
@@ -68,7 +73,6 @@ form {
   padding: 5px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  min-width: 0;
 }
 
 .timer-form__rows {
@@ -79,10 +83,6 @@ form {
 }
 
 .add-button {
-  flex-grow: 1;
-    width: 100%;
-  }
-  .add-button {
   background-color: #4caf50; /* Green */
   color: white;
   padding: 10px 15px;
@@ -92,9 +92,6 @@ form {
   font-size: 1em;
   transition: background-color 0.3s;
 }
-.add-button:hover {
-  background-color: #45a049;
-}
 
 .timer-form__rows input[name="name"] {
   flex-basis: 75%; /* Give more space to name inputs */
@@ -102,7 +99,4 @@ form {
 
 .timer-form__rows input[name="duration"] {
   flex-basis: 25%; /* Give less space to duration inputs */
-}
-.timer-form__rows input[name="name"] {
-  flex-grow: 3;
-}
+
