@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // If this is not the first row, add a delete button
         if (index !== 0) {
             const deleteButton = document.createElement('button');            
-            deleteButton.textContent = 'X';
+            deleteButton.textContent = 'x';
             deleteButton.id = 'removeTimerButton'
             // Set a data attribute to identify this row by index
             newRow.setAttribute('data-index', index)
