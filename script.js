@@ -41,9 +41,23 @@ document.addEventListener('DOMContentLoaded', function () {
      * appends it to the timer rows container, and then updates the indices
      * of all rows to ensure they are correctly numbered.
      */
+    function addEventListeners(newRow){
+
+        newRow.querySelectorAll('.timer-inputs input[name="name"]').forEach(input => {
+            input.addEventListener('blur', updateSummary);
+       });
+        newRow.querySelectorAll('.timer-inputs input[name="duration"]').forEach(input => {
+             input.addEventListener('blur', updateSummary);
+        });
+    }
     function addTimerRow() {
         const row = createTimerRow();
-        timerRowsContainer.appendChild(row);
+        addEventListeners(row);
+        timerRowsContainer.insertBefore(row, timerRowsContainer.lastChild);        
+        updateRowIndices();
+        updateSummary();
+        addEventListeners(row);
+        timerRowsContainer.insertBefore(row, timerRowsContainer.lastChild);
         updateSummary();
         updateSummary();
     }
@@ -66,35 +80,50 @@ document.addEventListener('DOMContentLoaded', function () {
         // Get the current number of rows to use as the index
         newRow.classList.add('timer-row');
         const index = timerRowsContainer.children.length;
+        
         // Define the HTML structure for the new row, including input fields for the timer's name and duration
-        newRow.classList.add('timer-row');
+        //Create a timer-controls div.
+        const timerControls = document.createElement('div');
+        timerControls.classList.add('timer-controls');
+
+        
         newRow.innerHTML = `
         <div class="timer-inputs">
+
+
             <input type="text" name="name" placeholder="Timer Name" value="${name}" required>
-            <input type="number" name="duration" placeholder="Seconds" value="${duration}" required>            
-        </div>        
-        <div class="timer-controls">            
-            <button class="remove-timer-button">x</button>
-        `;
+            <input type="number" name="duration" placeholder="Seconds" value="${duration}" required> 
+        </div>                                
+                       
+        `;        
 
         const addTimerButton = document.createElement('button');
         addTimerButton.textContent = '+';
         addTimerButton.classList.add('add-timer-button');
-        newRow.querySelector('.timer-controls').insertBefore(addTimerButton, newRow.querySelector('.remove-timer-button'));
+        timerControls.appendChild(addTimerButton);
 
-        const deleteButton = newRow.querySelector('.remove-timer-button');
 
         addTimerButton.addEventListener('click', function () {
             const rowIndex = parseInt(newRow.dataset.index);
             const row = createTimerRow();
             timerRowsContainer.insertBefore(row, newRow.nextSibling);
             updateRowIndices();
+            updateSummary();
         });
 
+        const removeTimerButton = document.createElement('button');
+        removeTimerButton.classList.add('remove-timer-button');
+        removeTimerButton.textContent = "x";
+        timerControls.appendChild(removeTimerButton);
+
+        newRow.appendChild(timerControls);
         // Set a data attribute to identify this row by index
         newRow.setAttribute('data-index', index);
         // Add a click listener to delete the row when the delete button is clicked
+        const deleteButton = newRow.querySelector('.remove-timer-button');
+
         deleteButton.addEventListener('click', function () {
+            
             const rowIndex = parseInt(newRow.dataset.index);
             //Only allow the removeTimerRow function to be called if there are more than one row.
             if (timerRowsContainer.children.length > 1) {
@@ -102,12 +131,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
             updateSummary();
         });
-        newRow.querySelectorAll('input[name="name"]').forEach(input => {
-            input.addEventListener('blur', updateSummary);
-       });
-        newRow.querySelectorAll('input[name="duration"]').forEach(input => {
-             input.addEventListener('blur', updateSummary);
-        });
+
         return newRow;        
     }
     

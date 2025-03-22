@@ -29,12 +29,6 @@ body {
   margin-left: 10px; /* add more margin between the timer name and the timer number */
 }
 
-#controls.timerControls {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-}
-
 form {
   display: flex;
   flex-wrap: wrap;
@@ -48,24 +42,31 @@ form {
   flex-direction: column;
 }
 
-.form-group {
-  width: 100%;
-}
-.form-group input {
+.form-group {width: 100%}
+
+.timer-row {
   display: flex;
-  flex-direction: column;
-  margin: 10px;
-  flex: 1 1 250px; /* Allow items to grow and shrink */
+  flex-wrap: wrap;
+  gap: 10px;
+  width: 100%;
 }
 
 .timer-form__actions {
   display: flex;
   justify-content: flex-end;
+  width: 100%;
+}
+.timer-controls {
+    display: flex;
+    width: auto;
+    gap: 5px;
 }
 
-.timer-form__rows > div{
+
+.timer-inputs{
   display: flex;
-  width: 100%;
+  flex: 1;
+  
 }
 
 .timer-form__rows input {
@@ -99,4 +100,4 @@ form {
 
 .timer-form__rows input[name="duration"] {
   flex-basis: 25%; /* Give less space to duration inputs */
-
+}
