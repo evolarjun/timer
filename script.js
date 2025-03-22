@@ -229,6 +229,13 @@ document.addEventListener('DOMContentLoaded', function () {
             // Set up an interval to update the timer every second
             timerInterval = setInterval(() => {
                 if (!isPaused) { // Check if the timer is not paused
+                    // Check if the timer duration is less than 0
+                    if (currentTimer.duration < 0) {
+                        // Set the duration to 0 and update the display
+                        currentTimer.duration = 0;
+                        timerDisplay.textContent = `${currentTimer.name}: ${currentTimer.duration} seconds`;
+                    }
+
                     currentTimer.duration--;
                     timerDisplay.textContent = `${currentTimer.name}: ${currentTimer.duration} seconds`;
                     if (currentTimer.duration <= 0) {
@@ -250,8 +257,9 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    function resetTimer() {
-         /**
+    function resetTimer() {        
+        // ... (existing code)
+        /**
          * Resets the timer to its initial state.
          *
          * This function stops the timer interval, resets the current timer index,
@@ -266,6 +274,12 @@ document.addEventListener('DOMContentLoaded', function () {
             row.querySelectorAll('input').forEach(input => input.style.border = '');
         });
     }    
+
+    const clearAllButton = document.getElementById('clearAll');
+    // Clear all button logic
+    clearAllButton.addEventListener('click', () => {
+        location.href = location.origin + location.pathname;
+    });
     
      /**
      * Updates the URL to reflect the current timers.
