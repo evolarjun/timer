@@ -37,24 +37,12 @@ form {
   max-width: 800px;
 }
 
-input:invalid {
-  border: 2px solid #ffcccc; /* Light red */
-}
 
 .form-group {
   display: flex;
   flex-direction: column;
   margin: 10px;
   flex: 1 1 250px; /* Allow items to grow and shrink */
-}
-
-input[type="text"],
-input[type="number"] {
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 1em;
 }
 
 .timerRows{

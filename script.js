@@ -262,12 +262,10 @@ document.addEventListener('DOMContentLoaded', function () {
         timerDisplay.textContent = '';
         startPauseButton.textContent = 'Start';
         isPaused = false;
-        const timerRows = timerForm.querySelectorAll('div');
-        timerRows.forEach(row => {
-            const durationInput = row.querySelector('input[name="duration"]');
-            durationInput.style.border = '';
+        Array.from(timerRowsContainer.children).forEach(row => {
+            row.querySelectorAll('input').forEach(input => input.style.border = '');
         });
-    }
+    }    
     
      /**
      * Updates the URL to reflect the current timers.
@@ -321,7 +319,9 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
     }
-    // Load timers from URL when the page loads
+    
+    
+    addTimerRow();
     loadFromURL();
 
     addTimerButton.addEventListener('click', addTimerRow);
