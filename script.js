@@ -243,10 +243,10 @@ document.addEventListener('DOMContentLoaded', function () {
                         ringBell();
                         clearInterval(timerInterval);
                         currentTimerIndex++;
-                        startTimer();
+                        startTimer();                        
                     }
                 }
-            }, 1000);
+            }, 1000);            
             startPauseButton.textContent = 'Pause';
         } else {
             new Audio('data:audio/wav;base64,UklGRjIAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA=').play();
@@ -254,6 +254,7 @@ document.addEventListener('DOMContentLoaded', function () {
             currentTimerIndex = 0;
             timers = []
             startPauseButton.textContent = 'Start';
+            timerDisplay.textContent = `Done!`
         }
     }
 
