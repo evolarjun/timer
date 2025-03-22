@@ -42,8 +42,10 @@ form {
   flex-direction: column;
 }
 
-
 .form-group {
+  width: 100%;
+}
+.form-group input {
   display: flex;
   flex-direction: column;
   margin: 10px;
@@ -55,15 +57,32 @@ form {
   justify-content: flex-end;
 }
 
+.timer-form__rows > div{
+  display: flex;
+  width: 100%;
+  gap: 5px;
+}
+
+.timer-form__rows input {
+  flex-grow: 1; /* Allow inputs to grow and fill the container */
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  min-width: 0;
+}
+
 .timer-form__rows {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 10px;
   width: 100%;
 }
 
-
 .add-button {
+  flex-grow: 1;
+    width: 100%;
+  }
+  .add-button {
   background-color: #4caf50; /* Green */
   color: white;
   padding: 10px 15px;
@@ -75,4 +94,15 @@ form {
 }
 .add-button:hover {
   background-color: #45a049;
+}
+
+.timer-form__rows input[name="name"] {
+  flex-basis: 75%; /* Give more space to name inputs */
+}
+
+.timer-form__rows input[name="duration"] {
+  flex-basis: 25%; /* Give less space to duration inputs */
+}
+.timer-form__rows input[name="name"] {
+  flex-grow: 3;
 }

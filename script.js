@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
             // Remove the timer row at the specified index
             timerRowsContainer.removeChild(timerRows[index]);
             updateRowIndices();
+            updateSummary();
            
         }
     }
@@ -44,15 +45,11 @@ document.addEventListener('DOMContentLoaded', function () {
      * of all rows to ensure they are correctly numbered.
      */
     function addTimerRow() {
-        const newRow = createTimerRow();
-
-        const index = timerRowsContainer.children.length;
-        
-        timerRowsContainer.appendChild(newRow);
-        updateRowIndices();
+        const row = createTimerRow();
+        timerRowsContainer.appendChild(row);
     }
     
-    /**
+    /** 
      * Creates a new timer row element.
      *
      * This function generates a new div element containing input fields for
@@ -65,30 +62,29 @@ document.addEventListener('DOMContentLoaded', function () {
      */
     function createTimerRow(name = '', duration = '') {
         // Create a new div element to represent a timer row
-        const newRow = document.createElement('div'); 
+        const newRow = document.createElement('div');
         // Get the current number of rows to use as the index
-        const index = timerRowsContainer.children.length;  
+        const index = timerRowsContainer.children.length;
         // Define the HTML structure for the new row, including input fields for the timer's name and duration
-        newRow.innerHTML = `            
+        newRow.innerHTML = `
             <input type="text" name="name" placeholder="Timer Name" value="${name}" required>
             <input type="number" name="duration" placeholder="Seconds" value="${duration}" required>
         `;
-        // If this is not the first row, add a delete button
-        if (index !== 0) {
-            const deleteButton = document.createElement('button');            
-            deleteButton.textContent = 'x';
-            deleteButton.id = 'removeTimerButton'
-            // Set a data attribute to identify this row by index
-            newRow.setAttribute('data-index', index)
-            // Add a click listener to delete the row when the delete button is clicked
-            deleteButton.addEventListener('click', function() {
-                const index = parseInt(newRow.dataset.index);
-                removeTimerRow(index);
-            });
-
-
-            newRow.appendChild(deleteButton);
-        }
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'x';
+        deleteButton.id = 'removeTimerButton';
+        // Set a data attribute to identify this row by index
+        newRow.setAttribute('data-index', index);
+        // Add a click listener to delete the row when the delete button is clicked
+        deleteButton.addEventListener('click', function () {
+            const rowIndex = parseInt(newRow.dataset.index);
+            //Only allow the removeTimerRow function to be called if there are more than one row.
+            if (timerRowsContainer.children.length > 1) {
+                removeTimerRow(rowIndex);
+            }
+        });
+        newRow.appendChild(deleteButton);
+        newRow.querySelectorAll('input').forEach(input => { input.addEventListener('input', updateSummary); });
         return newRow;
     }
     
@@ -332,6 +328,37 @@ document.addEventListener('DOMContentLoaded', function () {
                 const newRow = createTimerRow(names[i], times[i]);
                 timerRowsContainer.appendChild(newRow);
             }
+        }
+    }
+
+    function formatTime(totalSeconds) {
+        const hours = Math.floor(totalSeconds / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const seconds = totalSeconds % 60;
+
+        const formattedHours = String(hours).padStart(2, '0');
+        const formattedMinutes = String(minutes).padStart(2, '0');
+        const formattedSeconds = String(seconds).padStart(2, '0');
+
+        if (hours > 0) {
+            return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+        } else if (minutes > 0) {
+            return `${formattedMinutes}:${formattedSeconds}`;
+        } else {
+            return `${formattedSeconds}`;
+        }
+    }
+
+
+    function updateSummary() {
+        const totalDuration = timers.reduce((sum, timer) => sum + timer.duration, 0);
+        const summarySpan = document.getElementById('summary');
+        if(summarySpan){
+            summarySpan.textContent = `Total Time: ${formatTime(totalDuration)}`;
+        }
+        if(startPauseButton.textContent !== 'Pause' && startPauseButton.textContent !== 'Resume')
+        {
+            timerDisplay.textContent = `Total Time: ${formatTime(totalDuration)}`;
         }
     }
     
