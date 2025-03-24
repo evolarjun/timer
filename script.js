@@ -53,10 +53,6 @@ document.addEventListener('DOMContentLoaded', function () {
     function addTimerRow() {
         const row = createTimerRow();
         addEventListeners(row);
-        timerRowsContainer.insertBefore(row, timerRowsContainer.lastChild);        
-        updateRowIndices();
-        updateSummary();
-        addEventListeners(row);
         timerRowsContainer.insertBefore(row, timerRowsContainer.lastChild);
         updateSummary();
         updateSummary();
@@ -305,18 +301,21 @@ document.addEventListener('DOMContentLoaded', function () {
         // ... (existing code)
         /**
          * Resets the timer to its initial state.
-         *
          * This function stops the timer interval, resets the current timer index,
          * clears the timer display, and resets the start/pause button.
-         */
+         */        
         clearInterval(timerInterval);
         currentTimerIndex = 0;
         timerDisplay.textContent = '';
         startPauseButton.textContent = 'Start';
         isPaused = false;
         Array.from(timerRowsContainer.children).forEach(row => {
-            row.querySelectorAll('input').forEach(input => input.style.border = '');
+            row.querySelectorAll('input').forEach(input => {
+                input.style.border = '';
+            });
         });
+
+        updateSummary();
     }    
 
     const clearAllButton = document.getElementById('clearAll');
@@ -396,24 +395,30 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-
     function updateSummary() {
         const timerRows = Array.from(timerRowsContainer.children);
         let totalDuration = 0;
         const summarySpan = document.getElementById('summary');
         timerRows.forEach(row => {
             const durationInput = row.querySelector('input[name="duration"]');
-            let duration = durationInput ? parseInt(durationInput.value) : 0;            
-            if(isNaN(duration)){
+            let duration = durationInput ? parseInt(durationInput.value) : 0;
+            if (isNaN(duration)) {
                 duration = 0;
-            }            
+            }
             totalDuration += duration;
-        });   
-        if(startPauseButton.textContent !== 'Pause' && startPauseButton.textContent !== 'Resume')            
-        {
+        });
+        const timerDisplay = document.getElementById('timerDisplay');
+        if (summarySpan) {
+            summarySpan.textContent = `Total Time: ${formatTime(totalDuration)}`;
+        }
+        if (startPauseButton.textContent !== 'Pause' && startPauseButton.textContent !== 'Resume') {
             timerDisplay.textContent = `Total Time: ${formatTime(totalDuration)}`;
-        }    
+        }
+    
     }
+        
+    
+    
     
     
     if(document.getElementById('summary')){
