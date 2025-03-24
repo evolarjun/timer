@@ -55,7 +55,6 @@ document.addEventListener('DOMContentLoaded', function () {
         addEventListeners(row);
         timerRowsContainer.insertBefore(row, timerRowsContainer.lastChild);
         updateSummary();
-        updateSummary();
     }
 
     /** 

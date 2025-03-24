@@ -65,8 +65,8 @@ form {
 
 .timer-inputs{
   display: flex;
-  flex: 1;
-  
+  flex: 1; /*Allow the inputs to grow */
+  gap: 5px;
 }
 
 .timer-form__rows input {
